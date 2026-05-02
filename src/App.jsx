@@ -6,6 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import NotFoundPage from "./pages/NotFoundPage";
+import AdminRoute from "./components/AdminRoute";
 
 function App() {
   return (
@@ -13,7 +14,16 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/products" replace />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/admin/products" element={<AdminProducts />} />
+
+        <Route
+          path="/admin/products"
+          element={
+            <AdminRoute>
+              <AdminProducts />
+            </AdminRoute>
+          }
+        />
+
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/products" element={<Products />} />
