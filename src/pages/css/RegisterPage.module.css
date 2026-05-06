@@ -1,0 +1,106 @@
+
+.container {
+  width: 460px;
+  min-height: 596px;
+  height: auto;
+  background-color: #ffffff;
+  border: 1px solid #e4e4e4;
+  border-radius: 40px;
+  padding: 20px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card img {
+  width: 80px;
+  height: 84.47px;
+  margin: 31px auto 0 auto;
+}
+.card h2 {
+  text-align: center;
+  padding: 16.53px 0;
+  font-family: "Kalameh";
+  font-weight: 500;
+  font-size: 24px;
+  font-style: normal;
+}
+.card form {
+  display: flex;
+  flex-direction: column;
+  /* gap: 15px; */
+  margin-top: 51px;
+  max-width: 400px;
+  width: 100%;
+}
+.card form div {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.card form input {
+  width: 100%;
+  height: 53px;
+  border-radius: 15px;
+  background-color: #f2f2f2;
+  border: none;
+  padding: 0 16px 0 16px;
+  font-family: "Kalameh";
+  font-size: 16px;
+  font-weight: 400;
+  outline: none;
+  box-sizing: border-box;
+}
+.eye_icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: color 0.3s;
+}
+.eye_icon:hover {
+  color: #667eea;
+}
+.error_message {
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  font-size: 12px;
+  color: #ff4d4f;
+  font-family: "Kalameh";
+  white-space: nowrap;
+}
+.card form button {
+  width: 100%;
+  height: 53px;
+  border-radius: 15px;
+  padding: 0 10px;
+  margin-top: 20px;
+  background-color: #55a3f0;
+  border: none;
+  font-family: "kalameh";
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 100%;
+  color: #ffffff;
+  cursor: pointer;
+}
+.card a {
+  font-size: 16px;
+  font-family: "kalameh";
+  font-weight: 400;
+  color: #3a8bed;
+  display: block;
+  align-self: flex-start;
+  text-decoration: none;
+  /* margin-top: 20px; */
+  padding: 15px;
+}
