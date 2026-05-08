@@ -1,22 +1,37 @@
-const inputs = [
-  { 
-    name: "userName", 
-    type: "text", 
+const resInputs = [
+  {
+    name: "username",
+    type: "text",
     placeholder: "نام کاربری",
-    showToggle: false
+    showToggle: false,
   },
-  { 
-    name: "password", 
-    type: "password", 
+  {
+    name: "password",
+    type: "password",
     placeholder: "رمز عبور",
-    showToggle: true
+    showToggle: true,
   },
-  { 
-    name: "confirmPassword", 
-    type: "password", 
+  {
+    name: "confirmPassword",
+    type: "password",
     placeholder: "تکرار رمز عبور",
-    showToggle: true
-  }
+    showToggle: true,
+  },
 ];
 
-export default inputs;
+const logInputs = [
+  {
+    name: "username",
+    type: "text",
+    placeholder: "نام کاربری",
+    showToggle: false,
+  },
+  {
+    name: "password",
+    type: "password",
+    placeholder: "رمز عبور",
+    showToggle: true,
+  },
+];
+
+export { resInputs, logInputs };

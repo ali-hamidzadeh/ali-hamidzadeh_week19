@@ -1,6 +1,5 @@
-// قوانین اعتبارسنجی
 const rules = {
-  userName: (value) => {
+  username: (value) => {
     if (!value.trim()) return "نام کاربری الزامی است";
     if (value.length < 3) return "نام کاربری باید حداقل 3 کاراکتر باشد";
     return "";
@@ -28,8 +27,25 @@ export const validateForm = (formData) => {
   const error = {};
 
   Object.keys(rules).forEach((fieldName) => {
-    const error = rules[fieldName](formData[fieldName], formData);
-    if (error) error[fieldName] = error;
+    const errorMessage = rules[fieldName](formData[fieldName], formData);
+    if (errorMessage) {
+      error[fieldName] = errorMessage;
+    }
+  });
+
+  return error;
+};
+
+export const validateFields = (formData, fieldNames) => {
+  const error = {};
+
+  fieldNames.forEach((fieldName) => {
+    if (rules[fieldName]) {
+      const errorMessage = rules[fieldName](formData[fieldName], formData);
+      if (errorMessage) {
+        error[fieldName] = errorMessage;
+      }
+    }
   });
 
   return error;

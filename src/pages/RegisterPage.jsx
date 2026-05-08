@@ -1,22 +1,24 @@
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
-import inputs from "../utils/inputs";
+import { resInputs } from "../utils/inputs";
 import { validateField, validateForm } from "../utils/validation";
 import { register } from "../services/authServices";
 import Union from "../assets/Union.png";
 import { useTitle } from "../hooks/useTitle";
 import styles from "./css/RegisterPage.module.css";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
   const [form, setForm] = useState({
-    userName: "",
+    username: "",
     password: "",
     confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState({});
+  const navigate = useNavigate();
 
   useTitle("ثبت نام در بیزباز");
 
@@ -24,16 +26,20 @@ function RegisterPage() {
     const name = e.target.name;
     const value = e.target.value;
     setForm((prev) => ({ ...prev, [name]: value }));
-    const error = validateField(name, value, { ...form, [name]: value });
-    setError((prev) => ({ ...prev, [name]: error }));
+    setError((prev) => ({
+      ...prev,
+      [name]: validateField(name, value, { ...form, [name]: value }),
+      server: undefined,
+    }));
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
     const trimmedForm = {
-      ...form,
-      username: form.userName.trim(),
+      username: form.username.trim(),
+      password: form.password,
+      confirmPassword: form.confirmPassword,
     };
 
     const validationErrors = validateForm(trimmedForm);
@@ -42,14 +48,15 @@ function RegisterPage() {
     if (Object.keys(validationErrors).length > 0) return;
     try {
       const response = await register({
-        username: trimmedForm.userName,
+        username: trimmedForm.username,
         password: trimmedForm.password,
       });
 
       console.log("ثبت‌نام موفق:", response.data);
+      navigate("/products");
     } catch (e) {
       const message = e.response?.data?.message || "خطایی در ثبت‌نام رخ داد";
-      setError({ server: message });
+      setError((prev) => ({ ...prev, server: message }));
     }
   };
 
@@ -72,7 +79,10 @@ function RegisterPage() {
         <h2>فرم ثبت نام</h2>
 
         <form onSubmit={submitHandler}>
-          {inputs.map((input) => (
+          {error.server && (
+            <div className={styles.server_error}>{error.server}</div>
+          )}
+          {resInputs.map((input) => (
             <div key={input.name}>
               <input
                 type={
