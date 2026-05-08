@@ -95,7 +95,7 @@ function RegisterPage() {
                 value={form[input.name]}
                 placeholder={input.placeholder}
                 onChange={formHandler}
-                className={error[input.name] ? "input-error" : ""}
+                className={error[input.name] ? styles.input_error : ""}
               />
               {input.showToggle && (
                 <span
