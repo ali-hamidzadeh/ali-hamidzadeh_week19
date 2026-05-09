@@ -7,9 +7,9 @@ import { register } from "../services/authServices";
 import Union from "../assets/Union.png";
 import { useTitle } from "../hooks/useTitle";
 import styles from "./css/RegisterPage.module.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-function RegisterPage() {
+function RegisterPage({ isAdmin = false }) {
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -18,9 +18,10 @@ function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState({});
+
   const navigate = useNavigate();
 
-  useTitle("ثبت نام در بیزباز");
+  useTitle(isAdmin ? "ثبت نام ادمین" : "ثبت نام در بیزباز");
 
   const formHandler = (e) => {
     const name = e.target.name;
@@ -46,6 +47,7 @@ function RegisterPage() {
     setError(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) return;
+
     try {
       const response = await register({
         username: trimmedForm.username,
@@ -53,7 +55,18 @@ function RegisterPage() {
       });
 
       console.log("ثبت‌نام موفق:", response.data);
-      navigate("/products");
+
+      const role = isAdmin ? "admin" : "user";
+      localStorage.setItem("role", role);
+      localStorage.setItem("username", trimmedForm.username);
+
+      alert("ثبت‌نام موفق! حالا وارد شوید.");
+
+      if (role === "admin") {
+        navigate("/login?admin=true");
+      } else {
+        navigate("/login");
+      }
     } catch (e) {
       const message = e.response?.data?.message || "خطایی در ثبت‌نام رخ داد";
       setError((prev) => ({ ...prev, server: message }));
@@ -75,9 +88,11 @@ function RegisterPage() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <img src={Union} alt="onlineShop-logo" />
-        <h2>فرم ثبت نام</h2>
+        <Link to="/admin/register" className={styles.logo}>
+          <img src={Union} alt="onlineShop-logo" />
+        </Link>
 
+        <h2>{isAdmin ? "فرم ثبت نام ادمین" : "فرم ثبت نام"}</h2>
         <form onSubmit={submitHandler}>
           {error.server && (
             <div className={styles.server_error}>{error.server}</div>
@@ -115,7 +130,6 @@ function RegisterPage() {
 
           <button type="submit">ثبت نام</button>
         </form>
-
         <a href="/login">حساب کاربری دارید؟</a>
       </div>
     </div>

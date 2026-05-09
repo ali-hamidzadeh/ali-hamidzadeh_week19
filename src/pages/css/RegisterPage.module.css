@@ -12,10 +12,18 @@
   flex-direction: column;
   align-items: center;
 }
-.card img {
+.logo {
   width: 80px;
   height: 84.47px;
-  margin: 31px auto 0 auto;
+  margin: 31px auto 15px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 8px rgba(36, 114, 197, 0.749));
+  transform: scale(1.1);
 }
 .card h2 {
   text-align: center;
@@ -139,51 +147,51 @@
     border-radius: 30px;
     padding: 15px;
   }
-  
+
   .card img {
     width: 70px;
     height: 74px;
     margin-top: 20px;
   }
-  
+
   .card h2 {
     font-size: 22px;
     padding: 12px 0;
   }
-  
+
   .card form {
     margin-top: 35px;
     max-width: 100%;
   }
-  
+
   .card form input {
     height: 48px;
     font-size: 15px;
     border-radius: 12px;
   }
-  
+
   .card form button {
     height: 48px;
     font-size: 18px;
     margin-top: 15px;
     border-radius: 12px;
   }
-  
+
   .card a {
     font-size: 14px;
     padding: 12px;
   }
-  
+
   .server_error {
     font-size: 13px;
     padding: 10px 14px;
   }
-  
+
   .error_message {
     font-size: 11px;
     bottom: -18px;
   }
-  
+
   .eye_icon {
     font-size: 18px;
     left: 12px;
@@ -199,59 +207,59 @@
     border: none;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   }
-  
+
   .card img {
     width: 60px;
     height: 64px;
     margin-top: 15px;
   }
-  
+
   .card h2 {
     font-size: 20px;
     padding: 10px 0;
   }
-  
+
   .card form {
     margin-top: 25px;
     gap: 0;
   }
-  
+
   .card form div {
     margin-bottom: 16px;
   }
-  
+
   .card form input {
     height: 44px;
     font-size: 14px;
     border-radius: 10px;
     padding: 0 14px;
   }
-  
+
   .card form button {
     height: 44px;
     font-size: 16px;
     margin-top: 10px;
     border-radius: 10px;
   }
-  
+
   .card a {
     font-size: 13px;
     padding: 10px;
     align-self: center;
   }
-  
+
   .server_error {
     font-size: 12px;
     padding: 8px 12px;
     border-radius: 10px;
     margin-bottom: 12px;
   }
-  
+
   .error_message {
     font-size: 10px;
     bottom: -16px;
   }
-  
+
   .eye_icon {
     font-size: 16px;
     left: 10px;

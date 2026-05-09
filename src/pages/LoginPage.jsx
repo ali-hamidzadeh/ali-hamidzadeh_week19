@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTitle } from "../hooks/useTitle";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
@@ -19,6 +19,7 @@ function LoginPage() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+    const [searchParams] = useSearchParams()
 
   useTitle("ورود به بیزباز");
 
@@ -56,8 +57,25 @@ function LoginPage() {
       });
 
       console.log("ورود موفق:", response.data);
-      localStorage.setItem("token", response.data.token);
-      navigate("/products");
+      localStorage.setItem(
+        "token",
+        response.data.token || response.data.accessToken,
+      );
+      let role = localStorage.getItem("role");
+
+      if (!role) {
+        const isAdminParam = searchParams.get("admin");
+        role = isAdminParam === "true" ? "admin" : "user";
+      }
+
+      localStorage.setItem("role", role);
+      localStorage.setItem("username", trimmedForm.username);
+
+      if (role === "admin") {
+        navigate("/admin/products");
+      } else {
+        navigate("/products");
+      }
     } catch (e) {
       const message = e.response?.data?.message || "خطایی در ورود رخ داد";
       setErrors({ server: message });
