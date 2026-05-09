@@ -1,5 +1,6 @@
+// LoginPage.js
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { useTitle } from "../hooks/useTitle";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
@@ -8,6 +9,7 @@ import Union from "../assets/Union.png";
 import { logInputs } from "../utils/inputs";
 import { login } from "../services/authServices";
 import { validateFields } from "../utils/validation";
+import { getUser, updateUserTokenAfterLogin } from "../utils/userStorage";
 
 function LoginPage() {
   const [form, setForm] = useState({
@@ -19,7 +21,7 @@ function LoginPage() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-    const [searchParams] = useSearchParams()
+  const [searchParams] = useSearchParams();
 
   useTitle("ورود به بیزباز");
 
@@ -50,32 +52,39 @@ function LoginPage() {
     }
 
     setIsLoading(true);
+
     try {
       const response = await login({
         username: trimmedForm.username,
         password: trimmedForm.password,
       });
 
-      console.log("ورود موفق:", response.data);
-      localStorage.setItem(
-        "token",
-        response.data.token || response.data.accessToken,
-      );
-      let role = localStorage.getItem("role");
+      const token = response.data.token || response.data.accessToken;
 
-      if (!role) {
-        const isAdminParam = searchParams.get("admin");
-        role = isAdminParam === "true" ? "admin" : "user";
+      const existingUser = getUser(trimmedForm.username);
+
+      if (!existingUser) {
+        setErrors({ server: "ابتدا ثبت‌نام کنید" });
+        setIsLoading(false);
+        return;
       }
 
-      localStorage.setItem("role", role);
-      localStorage.setItem("username", trimmedForm.username);
-
-      if (role === "admin") {
-        navigate("/admin/products");
-      } else {
-        navigate("/products");
+      const isAdminParam = searchParams.get("admin") === "true";
+      if (isAdminParam && existingUser.role !== "admin") {
+        setErrors({ server: "شما دسترسی ادمین ندارید" });
+        setIsLoading(false);
+        return;
       }
+
+      updateUserTokenAfterLogin(trimmedForm.username, token);
+
+      setTimeout(() => {
+        if (existingUser.role === "admin") {
+          navigate("/admin/products");
+        } else {
+          navigate("/products");
+        }
+      }, 2000);
     } catch (e) {
       const message = e.response?.data?.message || "خطایی در ورود رخ داد";
       setErrors({ server: message });
@@ -87,8 +96,12 @@ function LoginPage() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <img src={Union} alt="onlineShop-logo" />
-        <h2>فرم ورود</h2>
+        <Link to="/" className={styles.logo}>
+          <img src={Union} alt="onlineShop-logo" />
+        </Link>
+        <h2>
+          {searchParams.get("admin") === "true" ? "ورود ادمین" : "فرم ورود"}
+        </h2>
 
         <form onSubmit={submitHandler}>
           {errors.server && (
@@ -96,7 +109,7 @@ function LoginPage() {
           )}
 
           {logInputs.map((input) => (
-            <div key={input.name}>
+            <div key={input.name} className={styles.input_group}>
               <input
                 type={input.showToggle && showPassword ? "text" : input.type}
                 name={input.name}
@@ -105,11 +118,12 @@ function LoginPage() {
                 placeholder={input.placeholder}
                 onChange={formHandler}
                 disabled={isLoading}
+                className={errors[input.name] ? styles.input_error : ""}
               />
               {input.showToggle && (
                 <span
                   className={styles.eye_icon}
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => !isLoading && setShowPassword(!showPassword)}
                 >
                   {showPassword ? <FiEye /> : <FiEyeOff />}
                 </span>
@@ -128,7 +142,17 @@ function LoginPage() {
           </button>
         </form>
 
-        <a href="/register">ایجاد حساب کاربری!</a>
+        <div className={styles.register_link}>
+          <Link
+            to={
+              searchParams.get("admin") === "true"
+                ? "/admin/register"
+                : "/register"
+            }
+          >
+            ایجاد حساب کاربری!
+          </Link>
+        </div>
       </div>
     </div>
   );

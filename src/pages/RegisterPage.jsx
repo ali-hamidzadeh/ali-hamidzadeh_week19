@@ -8,6 +8,7 @@ import Union from "../assets/Union.png";
 import { useTitle } from "../hooks/useTitle";
 import styles from "./css/RegisterPage.module.css";
 import { useNavigate, Link } from "react-router-dom";
+import { registerUser } from "../utils/userStorage";
 
 function RegisterPage({ isAdmin = false }) {
   const [form, setForm] = useState({
@@ -18,6 +19,7 @@ function RegisterPage({ isAdmin = false }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState({});
+  const [loading, setLoading] = useState(false); // state برای لودر
 
   const navigate = useNavigate();
 
@@ -45,8 +47,9 @@ function RegisterPage({ isAdmin = false }) {
 
     const validationErrors = validateForm(trimmedForm);
     setError(validationErrors);
-
     if (Object.keys(validationErrors).length > 0) return;
+
+    setLoading(true);
 
     try {
       const response = await register({
@@ -57,19 +60,27 @@ function RegisterPage({ isAdmin = false }) {
       console.log("ثبت‌نام موفق:", response.data);
 
       const role = isAdmin ? "admin" : "user";
-      localStorage.setItem("role", role);
-      localStorage.setItem("username", trimmedForm.username);
 
-      alert("ثبت‌نام موفق! حالا وارد شوید.");
+      const registered = registerUser(trimmedForm.username, role);
 
-      if (role === "admin") {
-        navigate("/login?admin=true");
-      } else {
-        navigate("/login");
+      if (!registered) {
+        setError({ server: "این نام کاربری قبلاً ثبت شده است" });
+        setLoading(false);
+        return;
       }
+
+      setTimeout(() => {
+        if (role === "admin") {
+          navigate("/login?admin=true");
+        } else {
+          navigate("/login");
+        }
+        setLoading(false);
+      }, 2000);
     } catch (e) {
       const message = e.response?.data?.message || "خطایی در ثبت‌نام رخ داد";
       setError((prev) => ({ ...prev, server: message }));
+      setLoading(false);
     }
   };
 
@@ -111,11 +122,12 @@ function RegisterPage({ isAdmin = false }) {
                 placeholder={input.placeholder}
                 onChange={formHandler}
                 className={error[input.name] ? styles.input_error : ""}
+                disabled={loading}
               />
               {input.showToggle && (
                 <span
                   className={styles.eye_icon}
-                  onClick={() => toggleVisibility(input.name)}
+                  onClick={() => !loading && toggleVisibility(input.name)}
                 >
                   {getVisibility(input.name) ? <FiEye /> : <FiEyeOff />}
                 </span>
@@ -128,9 +140,18 @@ function RegisterPage({ isAdmin = false }) {
             </div>
           ))}
 
-          <button type="submit">ثبت نام</button>
+          <button type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <span className={styles.spinner}></span>
+                در حال ثبت نام...
+              </>
+            ) : (
+              "ثبت نام"
+            )}
+          </button>
         </form>
-        <a href="/login">حساب کاربری دارید؟</a>
+        {!loading && <a href="/login">حساب کاربری دارید؟</a>}
       </div>
     </div>
   );
