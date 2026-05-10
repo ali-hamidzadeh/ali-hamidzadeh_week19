@@ -77,7 +77,7 @@ body {
   margin: auto;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   max-width: 1200px;
   min-height: 100vh;
   padding: 10px;

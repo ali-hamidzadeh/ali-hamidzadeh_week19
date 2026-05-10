@@ -3,7 +3,7 @@ const CURRENT_USER_KEY = "currentUser";
 
 export const getUsers = () => {
   const users = localStorage.getItem(USERS_KEY);
-  return users ? JSON.parse(users) : [];
+  return users ? JSON.parse(users) : {};
 };
 
 export const getUser = (username) => {
