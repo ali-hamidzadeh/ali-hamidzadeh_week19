@@ -36,7 +36,6 @@
 .card form {
   display: flex;
   flex-direction: column;
-  /* gap: 15px; */
   margin-top: 51px;
   max-width: 400px;
   width: 100%;
@@ -116,10 +115,7 @@
   color: #ffffff;
   cursor: pointer;
 }
-.card form button:hover {
-  background-color: #4a8fd9;
-  transition: background-color 0.3s ease;
-}
+
 .card form button:disabled {
   background-color: #b0d4f1;
   cursor: not-allowed;

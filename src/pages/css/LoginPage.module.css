@@ -36,7 +36,6 @@
 .card form {
   display: flex;
   flex-direction: column;
-  /* gap: 15px; */
   margin-top: 51px;
   max-width: 400px;
   width: 100%;
@@ -116,15 +115,17 @@
   color: #ffffff;
   cursor: pointer;
 }
-.card form button:hover {
-  background-color: #4a8fd9;
-  transition: background-color 0.3s ease;
-}
+
 .card form button:disabled {
   background-color: #b0d4f1;
   cursor: not-allowed;
 }
-.card a {
+.register_link {
+  color: #3a8bed;
+  display: block;
+  align-self: flex-start;
+}
+.register_link a {
   font-size: 16px;
   font-family: "kalameh";
   font-weight: 400;
@@ -134,7 +135,7 @@
   text-decoration: none;
   padding: 15px;
 }
-.card a:hover {
+.register_link a:hover {
   color: #2471c5;
   text-decoration: underline;
   transition: color 0.3s ease;
@@ -217,7 +218,7 @@ button:disabled {
     border-radius: 12px;
   }
 
-  .card a {
+  .register_link {
     font-size: 14px;
     padding: 12px;
   }
@@ -282,10 +283,10 @@ button:disabled {
     border-radius: 10px;
   }
 
-  .card a {
+  .register_link {
     font-size: 13px;
     padding: 10px;
-    align-self: flex-start;
+    align-self: center;
   }
 
   .server_error {
@@ -303,26 +304,5 @@ button:disabled {
   .eye_icon {
     font-size: 16px;
     left: 10px;
-  }
-}
-.spinner {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ffffff;
-  border-top: 2px solid transparent;
-  border-right: 2px solid transparent;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-  margin-left: 8px;
-  vertical-align: middle;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }

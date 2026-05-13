@@ -19,16 +19,11 @@ export function ProductSearchProvider({ children }) {
         limit: 10,
       });
 
-      // لاگ بگیرید تا ببینید دقیقاً چه ساختاری دارید
-      console.log("API Response:", response.data);
+    
 
-      // اگر totalPages در response.data.totalPages است:
       setTotalPages(response.data.totalPages || 1);
 
-      // اگر در response.data.pagination.totalPages است:
-      // setTotalPages(response.data.pagination?.totalPages || 1);
-
-      // محصولات را ست کنید
+  
       setProducts(response.data.products || response.data.data || []);
     } catch (error) {
       console.error("Error fetching products:", error);

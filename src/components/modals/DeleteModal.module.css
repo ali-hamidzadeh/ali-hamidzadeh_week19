@@ -1,0 +1,84 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #ffffff;
+  padding: 40px 60px;
+  border-radius: 20px;
+  width: 472px;
+  height: 338px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.modalContent img{
+  width: 96px;
+  height: 97.83px;
+  margin-bottom: 40px;
+}
+
+.modalTitle {
+  font-family: "Kalameh";
+  font-size: 20px;
+  font-weight: 400;
+  color: #282828;
+  margin: 20px 0px 30px;
+}
+
+
+.buttonContainer {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.cancelButton {
+   width: 160px;
+  height: 41px;
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #dfdfdf;
+  color: #282828;
+  font-weight: 500;
+  font-family: "Kalameh";
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deleteButton {
+  width: 160px;
+  height: 41px;
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #f43f5e;
+  color: #ffffff;
+  font-weight: 500;
+  font-family: "Kalameh";
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
