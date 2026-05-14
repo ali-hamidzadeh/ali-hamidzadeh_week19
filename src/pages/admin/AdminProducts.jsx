@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { getCurrentUser } from "../../utils/userStorage";
 import styles from "./AdminProduction.module.css";
 import { useProductSearch } from "../../contexts/ProductSearchContext";
@@ -16,6 +16,7 @@ import EditModal from "../../components/modals/EditModal";
 
 function AdminProducts() {
   const currentUser = getCurrentUser();
+  const timeoutRef = useRef(null);
 
   const {
     searchTerm,
@@ -46,6 +47,21 @@ function AdminProducts() {
   useEffect(() => {
     refreshProducts();
   }, []);
+
+  const handleSearchChange = useCallback(
+    (e) => {
+      const value = e.target.value;
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        setSearchTerm(value);
+      }, 500);
+    },
+    [setSearchTerm],
+  );
 
   const confirmDelete = async () => {
     if (deleteModal.product) {
@@ -86,7 +102,7 @@ function AdminProducts() {
             type="text"
             placeholder="جستجو کالا"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
           />
         </div>
         <div className={styles.login_user}>
@@ -124,26 +140,34 @@ function AdminProducts() {
                 </tr>
               </thead>
               <tbody>
-                {products.map((product) => (
-                  <tr key={product.id}>
-                    <td>{product.name}</td>
-                    <td>{product.quantity}</td>
-                    <td>{product.price}</td>
-                    <td>{product.id}</td>
-                    <td>
-                      <div className={styles.operation}>
-                        <BiEdit 
-                          className={styles.edit_icon} 
-                          onClick={() => openEditModal(product)} 
-                        />
-                        <BiTrash 
-                          className={styles.delete_icon} 
-                          onClick={() => openDeleteModal(product)} 
-                        />
-                      </div>
+                {products.length === 0 && searchTerm && !loading ? (
+                  <tr>
+                    <td colSpan="5" style={{ textAlign: "center" }}>
+                      محصولی یافت نشد
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  products.map((product) => (
+                    <tr key={product.id}>
+                      <td>{product.name}</td>
+                      <td>{product.quantity}</td>
+                      <td>{product.price}</td>
+                      <td>{product.id}</td>
+                      <td>
+                        <div className={styles.operation}>
+                          <BiEdit
+                            className={styles.edit_icon}
+                            onClick={() => openEditModal(product)}
+                          />
+                          <BiTrash
+                            className={styles.delete_icon}
+                            onClick={() => openDeleteModal(product)}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           )}
